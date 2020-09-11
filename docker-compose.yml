@@ -1,0 +1,25 @@
+version: "3"
+
+networks:
+  dev_env_network:
+    driver: bridge
+
+services:
+  app_db:
+    container_name: app_db
+    image: postgres:10.3
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=auth_service,story_service
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - app_db:/var/lib/postgresql/data
+      - ./pg-init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - dev_env_network
+
+volumes:
+  app_db:
