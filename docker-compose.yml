@@ -4,6 +4,9 @@ networks:
   dev_env_network:
     driver: bridge
 
+volumes:
+  app_db:
+
 services:
   app_db:
     container_name: app_db
@@ -17,9 +20,7 @@ services:
       - POSTGRES_PASSWORD=postgres
     volumes:
       - app_db:/var/lib/postgresql/data
-      - ./pg-init-scripts:/docker-entrypoint-initdb.d
+      - $PWD/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - $PWD/mocking:/mocking
     networks:
       - dev_env_network
-
-volumes:
-  app_db:
